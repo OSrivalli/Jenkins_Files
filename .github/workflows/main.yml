@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Get merged pull requests
-      id: get prs
+      id: get_prs
       run: |
         base_branch=${{ github.event.inputs.base_branch }}
         compare_branch=${{ github.event.inputs.compare_branch }}

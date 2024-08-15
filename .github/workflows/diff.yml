@@ -1,4 +1,4 @@
-name: List Merged Pull Requests
+name: Artifact PRs
 
 on:
   workflow_dispatch:

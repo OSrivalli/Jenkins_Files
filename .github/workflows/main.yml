@@ -1,0 +1,42 @@
+name: List Merged Pull Requests
+
+on:
+  workflow_dispatch:
+    inputs:
+       base_branch:
+         description: 'Base branch'
+         required: true
+         default: 'main'
+       compare_branch:
+         description: 'Compare branch'
+         required: true
+         default: 'develop'
+
+jobs:
+  list-prs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get merged pull requests
+      id: get prs
+      run: |
+        base_branch=${{ github.event.inputs.base_branch }}
+        compare_branch=${{ github.event.inputs.compare_branch }}
+
+        #Get the latest commit SHA of the base branch
+        base_sha=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
+        https://api.github.com/repos/${{ github.repository }}/branches/$base_branch | \
+        jq -r .commit.sha)
+
+        prs=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        "https://api.github.com/repos/${{ github.repository }}/pulls?state=closed&base=$base_branch | \
+        jq -r '.[] | select(.merged_at != null) | "\(.number) \(.title) \(.html_url)"')
+
+        echo "Merged PRS into $base_branch from _compare_branch: "
+        echo "$prs"
+
+  - name: Upload prs list as artifact
+  uses: actions/upload-artifact@v3
+  with:
+  name: pr-list
+  path: pr_list.txt
+  

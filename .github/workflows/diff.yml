@@ -1,0 +1,31 @@
+name: List Merged Pull Requests
+
+on:
+  workflow_dispatch:
+    inputs:
+       base_branch:
+         description: 'Base branch'
+         required: true
+         default: 'main'
+       compare_branch:
+         description: 'Compare branch'
+         required: true
+         default: 'develop'
+jobs:
+  list-prs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Fetch main branch
+      shell: bash
+      run: |
+      git fetch origin main
+    - name: Calculate PR diff
+      shell: bash
+      run: |
+      git diff origin/main..develop > mydiff
+  artifact:
+    - name: Artifact the diff
+      uses: actions/upload-artifact@v3
+      with:
+        name: pr-list
+        path: pr-list.txt

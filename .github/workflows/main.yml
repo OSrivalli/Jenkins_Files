@@ -34,9 +34,9 @@ jobs:
         echo "Merged PRS into $base_branch from _compare_branch: "
         echo "$prs"
 
-  - name: Upload prs list as artifact
-  uses: actions/upload-artifact@v3
-  with:
-  name: pr-list
-  path: pr_list.txt
+    - name: Upload prs list as artifact
+      uses: actions/upload-artifact@v3
+      with:
+      name: pr-list
+      path: pr_list.txt
   

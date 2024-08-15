@@ -24,11 +24,11 @@ jobs:
 
         #Get the latest commit SHA of the base branch
         base_sha=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
-        https://api.github.com/repos/${{ github.repository }}/branches/$base_branch | \
+        https://github.com/OSrivalli/repos/${{ github.repository }}/branches/$base_branch | \
         jq -r .commit.sha)
 
         prs=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-        "https://api.github.com/repos/${{ github.repository }}/pulls?state=closed&base=$base_branch | \
+        "https://github.com/OSrivalli/repos/${{ github.repository }}/pulls?state=closed&base=$base_branch | \
         jq -r '.[] | select(.merged_at != null) | "\(.number) \(.title) \(.html_url)"')
 
         echo "Merged PRS into $base_branch from _compare_branch: "
